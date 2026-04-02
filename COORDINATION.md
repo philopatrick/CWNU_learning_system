@@ -13,10 +13,11 @@ Monorepo for a CWNU learning system with:
 ## Current Architecture Decisions
 
 - Package manager: `npm` workspaces
-- Language: TypeScript
-- Database: MongoDB
-- Backend framework: NestJS-style structure implemented as a TypeScript service skeleton
-- Web framework: Next.js App Router structure
+- Language: TypeScript (ES modules)
+- Database: MongoDB (local localhost:27017)
+- Backend framework: Custom lightweight HTTP framework with module-based organization
+- Web framework: Next.js 15 App Router
+- Auth: JWT access tokens (1h) + refresh tokens (30d), bcrypt password hashing
 - Mobile: deferred to a later phase after web MVP
 - Playground execution: separate runner service in a later phase, not in the main backend process
 - AI integration: provider-agnostic service contract, with DeepSeek or other LLM providers behind an adapter
@@ -69,6 +70,10 @@ Workers should append concise notes under their section in their own branch or w
 - created root workspace files, docs, Docker Mongo setup, and the structure graph generator
 - integrated backend and web with `packages/shared`
 - normalized backend routes under `/api`
+- implemented MongoDB persistence layer
+- implemented JWT authentication with password hashing
+- added input validation framework
+- connected web frontend API client to backend endpoints
 
 ### Worker A result
 
@@ -85,9 +90,25 @@ Workers should append concise notes under their section in their own branch or w
 - shared contracts created under `packages/shared`
 - domain types, constants, API envelope types, and seed data available for cross-app reuse
 
-## Current Gaps
+## Current Status
 
-- dependencies still need a successful workspace install to run builds
-- MongoDB persistence is not wired yet
-- playground execution is still a stub and needs an isolated runner service
-- LLM provider integration is still an adapter boundary, not a live connection
+### Completed
+
+- Monorepo bootstrap with npm workspaces
+- MongoDB persistence layer wired up
+- Authentication with JWT tokens and bcrypt password hashing
+- Input validation framework
+- Web API client with auth token management
+- TypeScript type checking passes across all workspaces
+- Courses module with MongoDB repository (CRUD + enrollments)
+- Attendance module with MongoDB repository (sessions, records, summaries)
+- Homework module with MongoDB repository (assignments, submissions, grading)
+
+### Remaining Work
+
+- Web dashboards need to consume real API data instead of mock data
+- Integration tests for core modules
+- Playground execution needs an isolated runner service
+- LLM provider integration needs a live adapter implementation
+- Auth middleware for protecting routes (teacher/admin only)
+- Seed script to populate initial data

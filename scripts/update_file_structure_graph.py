@@ -26,6 +26,7 @@ IMPORTANT_FILES = {
 
 def should_include(path: Path) -> bool:
     return path.name in IMPORTANT_FILES or path.suffix in {
+        ".html",
         ".ts",
         ".tsx",
         ".js",

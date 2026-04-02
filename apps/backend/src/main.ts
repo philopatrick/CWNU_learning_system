@@ -1,7 +1,13 @@
 import { createBackendApp } from "./app.js";
 import { loadEnv } from "./config/env.js";
 
-const env = loadEnv(process.env);
-const app = createBackendApp(env);
+async function bootstrap() {
+  const env = loadEnv(process.env);
+  const app = await createBackendApp(env);
+  app.listen(env.port);
+}
 
-app.listen(env.port);
+bootstrap().catch((error) => {
+  console.error("Failed to start server:", error);
+  process.exit(1);
+});

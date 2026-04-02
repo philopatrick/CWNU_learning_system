@@ -7,3 +7,4 @@ coverage
 *.log
 .codex
 *.tsbuildinfo
+.tmp-skill-staging

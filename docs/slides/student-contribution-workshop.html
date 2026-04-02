@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CWNU Contribution Workshop</title>
+    <style>
+      :root {
+        --bg: #f2efe8;
+        --ink: #17202a;
+        --muted: #49586a;
+        --card: rgba(255, 255, 255, 0.82);
+        --line: rgba(23, 32, 42, 0.12);
+        --teal: #0f766e;
+        --orange: #c2410c;
+        --blue: #1d4ed8;
+        --gold: #a16207;
+        --shadow: 0 24px 60px rgba(23, 32, 42, 0.12);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        margin: 0;
+        min-height: 100%;
+        background:
+          radial-gradient(circle at top left, rgba(15, 118, 110, 0.14), transparent 28%),
+          radial-gradient(circle at top right, rgba(194, 65, 12, 0.16), transparent 30%),
+          linear-gradient(180deg, #fbf8f2 0%, var(--bg) 100%);
+        color: var(--ink);
+        font-family: "Space Grotesk", "Avenir Next", "Segoe UI", sans-serif;
+      }
+
+      body {
+        padding: 24px;
+      }
+
+      .deck-shell {
+        max-width: 1360px;
+        margin: 0 auto;
+      }
+
+      .deck-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 16px;
+        margin-bottom: 16px;
+        color: var(--muted);
+      }
+
+      .deck-header strong {
+        color: var(--ink);
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        font-size: 0.82rem;
+      }
+
+      .deck-header-right {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .deck {
+        position: relative;
+        min-height: calc(100vh - 104px);
+      }
+
+      .slide {
+        display: none;
+        min-height: calc(100vh - 104px);
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 28px;
+        box-shadow: var(--shadow);
+        padding: clamp(28px, 4vw, 56px);
+        overflow: hidden;
+        position: relative;
+      }
+
+      .slide.active {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .slide::before {
+        content: "";
+        position: absolute;
+        inset: auto -100px -120px auto;
+        width: 340px;
+        height: 340px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(29, 78, 216, 0.14), transparent 70%);
+        pointer-events: none;
+      }
+
+      .eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 8px 14px;
+        border-radius: 999px;
+        font-size: 0.84rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--teal);
+        background: rgba(15, 118, 110, 0.1);
+        border: 1px solid rgba(15, 118, 110, 0.16);
+      }
+
+      h1,
+      h2 {
+        margin: 18px 0 14px;
+        line-height: 0.95;
+        max-width: 11ch;
+      }
+
+      h1 {
+        font-size: clamp(3rem, 7vw, 6.4rem);
+      }
+
+      h2 {
+        font-size: clamp(2.25rem, 5vw, 4.6rem);
+      }
+
+      p,
+      li {
+        font-size: clamp(1rem, 1.4vw, 1.35rem);
+        line-height: 1.55;
+        color: var(--muted);
+      }
+
+      .lede {
+        font-size: clamp(1.12rem, 1.7vw, 1.5rem);
+        max-width: 60ch;
+      }
+
+      .grid-2 {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 22px;
+        margin-top: 24px;
+      }
+
+      .panel {
+        background: rgba(255, 255, 255, 0.72);
+        border: 1px solid var(--line);
+        border-radius: 22px;
+        padding: 22px 24px;
+      }
+
+      .panel h3 {
+        margin: 0 0 12px;
+        font-size: 1.2rem;
+        color: var(--ink);
+      }
+
+      ul {
+        margin: 12px 0 0;
+        padding-left: 22px;
+      }
+
+      li + li {
+        margin-top: 8px;
+      }
+
+      .flow {
+        display: grid;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        gap: 14px;
+        margin-top: 26px;
+      }
+
+      .step {
+        padding: 18px;
+        border-radius: 20px;
+        color: white;
+        min-height: 158px;
+      }
+
+      .step strong {
+        display: block;
+        margin-bottom: 10px;
+        font-size: 1rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+      }
+
+      .step p {
+        color: rgba(255, 255, 255, 0.9);
+        margin: 0;
+      }
+
+      .step.teal {
+        background: linear-gradient(180deg, #0f766e, #115e59);
+      }
+
+      .step.orange {
+        background: linear-gradient(180deg, #c2410c, #9a3412);
+      }
+
+      .step.blue {
+        background: linear-gradient(180deg, #2563eb, #1d4ed8);
+      }
+
+      .step.gold {
+        background: linear-gradient(180deg, #b45309, #92400e);
+      }
+
+      .step.ink {
+        background: linear-gradient(180deg, #334155, #1f2937);
+      }
+
+      code,
+      pre {
+        font-family: "JetBrains Mono", "SFMono-Regular", "Consolas", monospace;
+      }
+
+      pre {
+        margin: 18px 0 0;
+        padding: 18px 20px;
+        border-radius: 18px;
+        background: #0f172a;
+        color: #e2e8f0;
+        overflow-x: auto;
+        font-size: 0.96rem;
+      }
+
+      .tag-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 18px;
+      }
+
+      .tag {
+        padding: 8px 12px;
+        border-radius: 999px;
+        border: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.72);
+        color: var(--ink);
+        font-size: 0.95rem;
+      }
+
+      .footer-bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 16px;
+        margin-top: 18px;
+        color: var(--muted);
+        font-size: 0.95rem;
+      }
+
+      .controls {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+      }
+
+      .counter {
+        min-width: 72px;
+        text-align: center;
+        font-size: 0.95rem;
+        color: var(--ink);
+      }
+
+      button {
+        border: 0;
+        border-radius: 999px;
+        padding: 12px 18px;
+        font: inherit;
+        cursor: pointer;
+        color: white;
+        background: var(--ink);
+      }
+
+      button.secondary {
+        background: rgba(23, 32, 42, 0.14);
+        color: var(--ink);
+      }
+
+      @media (max-width: 980px) {
+        .grid-2,
+        .flow {
+          grid-template-columns: 1fr;
+        }
+
+        h1,
+        h2 {
+          max-width: none;
+        }
+
+        .slide {
+          min-height: auto;
+        }
+      }
+
+      @media print {
+        body {
+          padding: 0;
+          background: white;
+        }
+
+        .deck-header,
+        .controls {
+          display: none;
+        }
+
+        .slide {
+          display: block !important;
+          min-height: 100vh;
+          page-break-after: always;
+          border-radius: 0;
+          box-shadow: none;
+          border: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="deck-shell">
+      <div class="deck-header">
+        <strong>CWNU Contribution Workshop</strong>
+        <div class="deck-header-right">
+          <span>Arrow keys, space, or buttons to navigate</span>
+          <div class="controls">
+            <button type="button" id="prevBtnHeader" class="secondary">Previous</button>
+            <span class="counter" id="counter">1 / 12</span>
+            <button type="button" id="nextBtnHeader">Next</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="deck" id="deck">
+        <section class="slide active">
+          <div>
+            <span class="eyebrow">Slide 1 · Opening</span>
+            <h1>Contribute Like An Engineering Team</h1>
+            <p class="lede">
+              This repository is not only a school project. It is a shared software system. Your goal is to contribute safely, clearly, and professionally.
+            </p>
+            <div class="tag-row">
+              <span class="tag">GitHub</span>
+              <span class="tag">Git</span>
+              <span class="tag">Fork</span>
+              <span class="tag">Pull Request</span>
+              <span class="tag">Codex</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="slide">
+          <div>
+            <span class="eyebrow">Slide 2 · Vocabulary</span>
+            <h2>Know The Words Before The Workflow</h2>
+            <div class="grid-2">
+              <div class="panel">
+                <h3>GitHub basics</h3>
+                <ul>
+                  <li><strong>Repository</strong>: the project home on GitHub.</li>
+                  <li><strong>Clone</strong>: your local copy on your computer.</li>
+                  <li><strong>Fork</strong>: your personal GitHub copy of the project.</li>
+                  <li><strong>Branch</strong>: a separate line of work for one task.</li>
+                </ul>
+              </div>
+              <div class="panel">
+                <h3>Collaboration basics</h3>
+                <ul>
+                  <li><strong>Commit</strong>: a saved checkpoint with a message.</li>
+                  <li><strong>Pull Request</strong>: a request to merge your branch.</li>
+                  <li><strong>Review</strong>: comments and approval from maintainers.</li>
+                  <li><strong>Merge</strong>: the final step that brings code into <code>main</code>.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="slide">
+          <div>
+            <span class="eyebrow">Slide 3 · SSH</span>
+            <h2>Set Up Git SSH Once</h2>
+            <p class="lede">
+              SSH is the cleanest way to push and pull from GitHub. Set it up once and reuse it across all projects.
+            </p>
+            <pre>ssh-keygen -t ed25519 -C "your-email@example.com"
+eval "$(ssh-agent -s)"
+ssh-add ~/.ssh/id_ed25519
+cat ~/.ssh/id_ed25519.pub
+ssh -T git@github.com</pre>
+            <div class="footer-bar">
+              <span>Add the public key to GitHub under Settings → SSH and GPG keys.</span>
+              <span>Expected result: successful GitHub authentication.</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="slide">
+          <div>
+            <span class="eyebrow">Slide 4 · Fork Model</span>
+            <h2>Students Should Default To Fork + PR</h2>
+            <div class="flow">
+              <div class="step teal">
+                <strong>1. Fork</strong>
+                <p>Create your own GitHub copy of the repository.</p>
+              </div>
+              <div class="step orange">
+                <strong>2. Clone</strong>
+                <p>Clone your fork to your local machine.</p>
+              </div>
+              <div class="step blue">
+                <strong>3. Upstream</strong>
+                <p>Add the main class repository as <code>upstream</code>.</p>
+              </div>
+              <div class="step gold">
+                <strong>4. Branch</strong>
+                <p>Create one branch for one task.</p>
+              </div>
+              <div class="step ink">
+                <strong>5. PR</strong>
+                <p>Push to your fork and open a pull request.</p>
+              </div>
+            </div>
+            <pre>git clone git@github.com:YOUR_USERNAME/CWNU_learning_system.git
+cd CWNU_learning_system
+git remote add upstream git@github.com:ORIGINAL_OWNER/CWNU_learning_system.git
+git remote -v</pre>
+          </div>
+        </section>
+
+        <section class="slide">
+          <div>
+            <span class="eyebrow">Slide 5 · Branching</span>
+            <h2>One Branch, One Job</h2>
+            <div class="grid-2">
+              <div class="panel">
+                <h3>Good branch names</h3>
+                <ul>
+                  <li><code>docs/student-onboarding</code></li>
+                  <li><code>fix/homework-empty-state</code></li>
+                  <li><code>feature/playground-language-cards</code></li>
+                </ul>
+              </div>
+              <div class="panel">
+                <h3>Branch rule</h3>
+                <ul>
+                  <li>Do not code on <code>main</code>.</li>
+                  <li>Do not mix unrelated changes.</li>
+                  <li>Keep PRs small enough to review.</li>
+                </ul>
+              </div>
+            </div>
+            <pre>git checkout main
+git fetch upstream
+git merge upstream/main
+git checkout -b docs/student-onboarding</pre>
+          </div>
+        </section>
+
+        <section class="slide">
+          <div>
+            <span class="eyebrow">Slide 6 · Commits</span>
+            <h2>Make Commits Easy To Read</h2>
+            <div class="grid-2">
+              <div class="panel">
+                <h3>Good commit prefixes</h3>
+                <ul>
+                  <li><code>docs:</code></li>
+                  <li><code>feat:</code></li>
+                  <li><code>fix:</code></li>
+                  <li><code>test:</code></li>
+                  <li><code>refactor:</code></li>
+                </ul>
+              </div>
+              <div class="panel">
+                <h3>Examples</h3>
+                <ul>
+                  <li><code>docs: add contribution handbook</code></li>
+                  <li><code>fix: normalize attendance response</code></li>
+                  <li><code>feat: add teacher summary cards</code></li>
+                </ul>
+              </div>
+            </div>
+            <pre>git add .
+git commit -m "docs: add contribution handbook"</pre>
+          </div>
+        </section>
+
+        <section class="slide">
+          <div>
+            <span class="eyebrow">Slide 7 · PRs</span>
+            <h2>Open A Pull Request With Context</h2>
+            <p class="lede">
+              A PR is not just code. It is an explanation to another engineer about what changed and why.
+            </p>
+            <div class="grid-2">
+              <div class="panel">
+                <h3>PR should include</h3>
+                <ul>
+                  <li>what changed</li>
+                  <li>why it changed</li>
+                  <li>how it was tested</li>
+                  <li>screenshots for UI work</li>
+                </ul>
+              </div>
+              <div class="panel">
+                <h3>Before review</h3>
+                <ul>
+                  <li>run relevant checks</li>
+                  <li>remove secrets</li>
+                  <li>keep the PR focused</li>
+                  <li>read your own diff once</li>
+                </ul>
+              </div>
+            </div>
+            <pre>git push -u origin docs/student-onboarding
+gh pr create</pre>
+          </div>
+        </section>
+
+        <section class="slide">
+          <div>
+            <span class="eyebrow">Slide 8 · Review</span>
+            <h2>Review Is Normal, Not Personal</h2>
+            <div class="flow">
+              <div class="step teal">
+                <strong>Open PR</strong>
+                <p>Ask for review with a clear title and description.</p>
+              </div>
+              <div class="step orange">
+                <strong>Receive comments</strong>
+                <p>Read carefully. Do not reply defensively.</p>
+              </div>
+              <div class="step blue">
+                <strong>Update branch</strong>
+                <p>Push follow-up commits to the same branch.</p>
+              </div>
+              <div class="step gold">
+                <strong>Approve</strong>
+                <p>The maintainer confirms the branch is ready.</p>
+              </div>
+              <div class="step ink">
+                <strong>Merge</strong>
+                <p>The maintainer merges, often with squash merge.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="slide">
+          <div>
+            <span class="eyebrow">Slide 9 · Codex</span>
+            <h2>Set Up Codex On Your Computer</h2>
+            <div class="grid-2">
+              <div class="panel">
+                <h3>Install and verify</h3>
+                <pre>npm install -g @openai/codex
+codex --help</pre>
+              </div>
+              <div class="panel">
+                <h3>Log in</h3>
+                <pre>codex login
+codex login status
+
+# or API key flow
+printenv OPENAI_API_KEY | codex login --with-api-key</pre>
+              </div>
+            </div>
+            <pre>cd CWNU_learning_system
+codex</pre>
+            <div class="footer-bar">
+              <span>Use Codex to explain code, review diffs, and plan small features.</span>
+              <span>Do not submit code you do not understand.</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="slide">
+          <div>
+            <span class="eyebrow">Slide 10 · Class Rules</span>
+            <h2>Project Rules For Students</h2>
+            <div class="grid-2">
+              <div class="panel">
+                <h3>Do</h3>
+                <ul>
+                  <li>keep branches focused</li>
+                  <li>write readable commit messages</li>
+                  <li>test before opening a PR</li>
+                  <li>ask questions early</li>
+                </ul>
+              </div>
+              <div class="panel">
+                <h3>Do not</h3>
+                <ul>
+                  <li>push directly to <code>main</code></li>
+                  <li>commit secrets or <code>.env</code> files</li>
+                  <li>open giant mixed PRs</li>
+                  <li>use AI output blindly</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="slide">
+          <div>
+            <span class="eyebrow">Slide 11 · First Tasks</span>
+            <h2>Strong First Contributions</h2>
+            <div class="tag-row">
+              <span class="tag">docs improvements</span>
+              <span class="tag">typo fixes</span>
+              <span class="tag">empty states</span>
+              <span class="tag">form validation</span>
+              <span class="tag">test coverage</span>
+              <span class="tag">responsive polish</span>
+              <span class="tag">accessibility</span>
+            </div>
+            <p class="lede">
+              Small, clean, reviewable contributions teach better engineering habits than large, chaotic ones.
+            </p>
+          </div>
+        </section>
+
+        <section class="slide">
+          <div>
+            <span class="eyebrow">Slide 12 · Closing</span>
+            <h2>Real Goal: Learn Collaborative Engineering</h2>
+            <p class="lede">
+              Git, GitHub, branches, PRs, review, and AI-assisted tooling are now part of modern software work. This project is your place to practice them correctly.
+            </p>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <script>
+      const slides = Array.from(document.querySelectorAll(".slide"));
+      let index = 0;
+
+      function render(nextIndex) {
+        index = (nextIndex + slides.length) % slides.length;
+        slides.forEach((slide, current) => {
+          slide.classList.toggle("active", current === index);
+        });
+        document.getElementById("counter").textContent = `${index + 1} / ${slides.length}`;
+      }
+
+      function nextSlide() {
+        render(index + 1);
+      }
+
+      function previousSlide() {
+        render(index - 1);
+      }
+
+      document.getElementById("nextBtnHeader").addEventListener("click", nextSlide);
+      document.getElementById("prevBtnHeader").addEventListener("click", previousSlide);
+
+      window.addEventListener("keydown", (event) => {
+        if (event.key === "ArrowRight" || event.key === " " || event.key === "PageDown") {
+          event.preventDefault();
+          nextSlide();
+        }
+
+        if (event.key === "ArrowLeft" || event.key === "PageUp") {
+          event.preventDefault();
+          previousSlide();
+        }
+      });
+    </script>
+  </body>
+</html>
