@@ -103,6 +103,7 @@ npm run graph            # Generate file structure graph
 
 - Student handbook: [docs/student-contribution-guide.md](./docs/student-contribution-guide.md)
 - HTML slide deck: [docs/slides/student-contribution-workshop.html](./docs/slides/student-contribution-workshop.html)
+- Contribution rules: [CONTRIBUTING.md](./CONTRIBUTING.md)
 
 ## License
 

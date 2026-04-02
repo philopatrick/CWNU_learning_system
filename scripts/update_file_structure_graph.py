@@ -13,6 +13,7 @@ IGNORED_DIRS = {
     "dist",
     "coverage",
     "__pycache__",
+    ".tmp-skill-staging",
 }
 
 IMPORTANT_FILES = {
@@ -27,6 +28,8 @@ IMPORTANT_FILES = {
 def should_include(path: Path) -> bool:
     return path.name in IMPORTANT_FILES or path.suffix in {
         ".html",
+        ".yml",
+        ".yaml",
         ".ts",
         ".tsx",
         ".js",

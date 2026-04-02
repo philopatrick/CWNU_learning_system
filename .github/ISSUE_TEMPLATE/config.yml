@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Student Contribution Guide
+    url: https://github.com/philopatrick/CWNU_learning_system/blob/main/docs/student-contribution-guide.md
+    about: Read the onboarding guide before opening a contribution question.
+  - name: Workshop Slides
+    url: https://github.com/philopatrick/CWNU_learning_system/blob/main/docs/slides/student-contribution-workshop.html
+    about: Use the slide deck for a quick GitHub and Codex contribution walkthrough.
