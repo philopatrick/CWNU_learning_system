@@ -1,0 +1,17 @@
+{
+  "name": "cwnu-learning-system",
+  "version": "0.1.0",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev:web": "npm run dev --workspace @cwnu/web",
+    "dev:backend": "npm run start:dev --workspace @cwnu/backend",
+    "build": "npm run build --workspaces",
+    "lint": "npm run lint --workspaces",
+    "typecheck": "npm run typecheck --workspaces",
+    "graph": "python3 scripts/update_file_structure_graph.py"
+  }
+}

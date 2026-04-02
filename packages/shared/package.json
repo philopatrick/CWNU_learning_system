@@ -1,0 +1,55 @@
+{
+  "name": "@cwnu/shared",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./api": {
+      "types": "./dist/api.d.ts",
+      "import": "./dist/api.js"
+    },
+    "./attendance": {
+      "types": "./dist/attendance.d.ts",
+      "import": "./dist/attendance.js"
+    },
+    "./ai": {
+      "types": "./dist/ai.d.ts",
+      "import": "./dist/ai.js"
+    },
+    "./constants": {
+      "types": "./dist/constants.d.ts",
+      "import": "./dist/constants.js"
+    },
+    "./courses": {
+      "types": "./dist/courses.d.ts",
+      "import": "./dist/courses.js"
+    },
+    "./homework": {
+      "types": "./dist/homework.d.ts",
+      "import": "./dist/homework.js"
+    },
+    "./playgrounds": {
+      "types": "./dist/playgrounds.d.ts",
+      "import": "./dist/playgrounds.js"
+    },
+    "./seed": {
+      "types": "./dist/seed.d.ts",
+      "import": "./dist/seed.js"
+    },
+    "./users": {
+      "types": "./dist/users.d.ts",
+      "import": "./dist/users.js"
+    }
+  },
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json",
+    "build": "tsc -p tsconfig.json"
+  }
+}
