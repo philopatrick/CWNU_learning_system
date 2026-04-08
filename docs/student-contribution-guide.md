@@ -292,11 +292,7 @@ From the repository root:
 npm install
 ```
 
-If you want local MongoDB through Docker:
-
-```bash
-docker-compose up -d
-```
+Make sure your local MongoDB service is running on `127.0.0.1:27017` before starting the backend.
 
 ## Run The Project Locally
 

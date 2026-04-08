@@ -8,7 +8,7 @@
   ],
   "scripts": {
     "dev:web": "npm run dev --workspace @cwnu/web",
-    "dev:backend": "npm run start:dev --workspace @cwnu/backend",
+    "dev:backend": "npm run dev --workspace @cwnu/backend",
     "build": "npm run build --workspaces",
     "lint": "npm run lint --workspaces",
     "typecheck": "npm run typecheck --workspaces",

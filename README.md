@@ -33,15 +33,14 @@ A monorepo for the CWNU learning platform serving international students, teache
 # Install dependencies
 npm install
 
-# Start MongoDB (if using Docker)
-docker-compose up -d
-
 # Start backend (port 4000)
 npm run dev:backend
 
 # Start web (port 3000) - in another terminal
 npm run dev:web
 ```
+
+Before starting the backend, make sure your local MongoDB service is running on `127.0.0.1:27017`.
 
 ### Environment Setup
 

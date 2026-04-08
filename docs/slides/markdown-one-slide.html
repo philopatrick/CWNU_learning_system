@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Markdown Guide Deck</title>
+    <style>
+      :root {
+        --bg: #f5f1e8;
+        --ink: #16212b;
+        --muted: #4f5f6f;
+        --card: rgba(255, 255, 255, 0.82);
+        --line: rgba(22, 33, 43, 0.1);
+        --teal: #0f766e;
+        --blue: #1d4ed8;
+        --rust: #c2410c;
+        --gold: #a16207;
+        --night: #0f172a;
+        --shadow: 0 24px 60px rgba(22, 33, 43, 0.14);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        margin: 0;
+        min-height: 100%;
+        background:
+          radial-gradient(circle at top left, rgba(15, 118, 110, 0.14), transparent 28%),
+          radial-gradient(circle at top right, rgba(194, 65, 12, 0.16), transparent 30%),
+          linear-gradient(180deg, #fcf9f3 0%, var(--bg) 100%);
+        color: var(--ink);
+        font-family: "Space Grotesk", "Avenir Next", "Segoe UI", sans-serif;
+      }
+
+      body {
+        padding: 24px;
+      }
+
+      .deck-shell {
+        max-width: 1360px;
+        margin: 0 auto;
+      }
+
+      .deck-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 16px;
+        margin-bottom: 16px;
+        color: var(--muted);
+      }
+
+      .deck-header strong {
+        color: var(--ink);
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        font-size: 0.82rem;
+      }
+
+      .deck-header-right {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .deck {
+        position: relative;
+        min-height: calc(100vh - 104px);
+      }
+
+      .slide {
+        display: none;
+        min-height: calc(100vh - 104px);
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 28px;
+        box-shadow: var(--shadow);
+        padding: clamp(28px, 4vw, 56px);
+        overflow: hidden;
+        position: relative;
+      }
+
+      .slide.active {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .slide::before {
+        content: "";
+        position: absolute;
+        inset: auto -100px -120px auto;
+        width: 340px;
+        height: 340px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(29, 78, 216, 0.14), transparent 70%);
+        pointer-events: none;
+      }
+
+      .eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 8px 14px;
+        border-radius: 999px;
+        font-size: 0.84rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--teal);
+        background: rgba(15, 118, 110, 0.1);
+        border: 1px solid rgba(15, 118, 110, 0.16);
+      }
+
+      h1,
+      h2 {
+        margin: 18px 0 14px;
+        line-height: 0.95;
+        max-width: 11ch;
+      }
+
+      h1 {
+        font-size: clamp(3rem, 7vw, 6.2rem);
+      }
+
+      h2 {
+        font-size: clamp(2.2rem, 5vw, 4.4rem);
+      }
+
+      h3 {
+        margin: 0 0 12px;
+        font-size: 1.18rem;
+      }
+
+      p,
+      li {
+        font-size: clamp(1rem, 1.4vw, 1.28rem);
+        line-height: 1.55;
+        color: var(--muted);
+      }
+
+      .lede {
+        font-size: clamp(1.12rem, 1.7vw, 1.46rem);
+        max-width: 58ch;
+      }
+
+      .grid-2,
+      .grid-3 {
+        display: grid;
+        gap: 22px;
+        margin-top: 24px;
+      }
+
+      .grid-2 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .grid-3 {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .panel {
+        background: rgba(255, 255, 255, 0.74);
+        border: 1px solid var(--line);
+        border-radius: 22px;
+        padding: 22px 24px;
+      }
+
+      .panel strong {
+        color: var(--ink);
+      }
+
+      .hero-row {
+        display: grid;
+        grid-template-columns: 1.1fr 0.9fr;
+        gap: 26px;
+        align-items: end;
+      }
+
+      .stat-card {
+        padding: 20px 22px;
+        border-radius: 22px;
+        color: white;
+        min-height: 180px;
+      }
+
+      .stat-card strong {
+        display: block;
+        margin-bottom: 10px;
+        font-size: 0.96rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .stat-card p {
+        color: rgba(255, 255, 255, 0.92);
+        margin: 0;
+      }
+
+      .teal {
+        background: linear-gradient(180deg, #0f766e, #115e59);
+      }
+
+      .blue {
+        background: linear-gradient(180deg, #2563eb, #1d4ed8);
+      }
+
+      .rust {
+        background: linear-gradient(180deg, #c2410c, #9a3412);
+      }
+
+      .gold {
+        background: linear-gradient(180deg, #b45309, #92400e);
+      }
+
+      code,
+      pre {
+        font-family: "JetBrains Mono", "SFMono-Regular", "Consolas", monospace;
+      }
+
+      pre {
+        margin: 18px 0 0;
+        padding: 18px 20px;
+        border-radius: 18px;
+        background: var(--night);
+        color: #e2e8f0;
+        overflow-x: auto;
+        font-size: 0.95rem;
+        line-height: 1.55;
+      }
+
+      ul {
+        margin: 10px 0 0;
+        padding-left: 22px;
+      }
+
+      li + li {
+        margin-top: 8px;
+      }
+
+      .tag-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 18px;
+      }
+
+      .tag {
+        padding: 8px 12px;
+        border-radius: 999px;
+        border: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.72);
+        color: var(--ink);
+        font-size: 0.95rem;
+      }
+
+      .flow {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 14px;
+        margin-top: 26px;
+      }
+
+      .step {
+        padding: 18px;
+        border-radius: 20px;
+        color: white;
+        min-height: 160px;
+      }
+
+      .step strong {
+        display: block;
+        margin-bottom: 10px;
+        font-size: 1rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .step p {
+        color: rgba(255, 255, 255, 0.9);
+        margin: 0;
+      }
+
+      .footer-bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 16px;
+        margin-top: 18px;
+        color: var(--muted);
+        font-size: 0.95rem;
+      }
+
+      .controls {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+      }
+
+      .counter {
+        min-width: 72px;
+        text-align: center;
+        font-size: 0.95rem;
+        color: var(--ink);
+      }
+
+      button {
+        border: 0;
+        border-radius: 999px;
+        padding: 12px 18px;
+        font: inherit;
+        cursor: pointer;
+        color: white;
+        background: var(--ink);
+      }
+
+      button.secondary {
+        background: rgba(22, 33, 43, 0.14);
+        color: var(--ink);
+      }
+
+      @media (max-width: 980px) {
+        .hero-row,
+        .grid-2,
+        .grid-3,
+        .flow {
+          grid-template-columns: 1fr;
+        }
+
+        h1,
+        h2 {
+          max-width: none;
+        }
+
+        .slide {
+          min-height: auto;
+        }
+
+        .deck-header {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+
+        .deck-header-right {
+          flex-wrap: wrap;
+        }
+      }
+
+      @media print {
+        body {
+          padding: 0;
+          background: white;
+        }
+
+        .deck-header,
+        .controls {
+          display: none;
+        }
+
+        .slide {
+          display: block !important;
+          min-height: 100vh;
+          page-break-after: always;
+          border-radius: 0;
+          box-shadow: none;
+          border: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="deck-shell">
+      <div class="deck-header">
+        <strong>Markdown Guide Deck</strong>
+        <div class="deck-header-right">
+          <span>Arrow keys, space, or buttons to navigate</span>
+          <div class="controls">
+            <button type="button" id="prevBtnHeader" class="secondary">Previous</button>
+            <span class="counter" id="counter">1 / 6</span>
+            <button type="button" id="nextBtnHeader">Next</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="deck" id="deck">
+        <section class="slide active">
+          <div>
+            <span class="eyebrow">Slide 1 · Definition</span>
+            <div class="hero-row">
+              <div>
+                <h1>Markdown turns plain text into structured content.</h1>
+                <p class="lede">
+                  A Markdown file usually ends with <code>.md</code>. You write normal text plus
+                  lightweight symbols, then a renderer converts it into HTML or another formatted view.
+                </p>
+                <div class="tag-row">
+                  <span class="tag">Plain text</span>
+                  <span class="tag">Readable raw form</span>
+                  <span class="tag">HTML output</span>
+                  <span class="tag">Docs</span>
+                  <span class="tag">README</span>
+                  <span class="tag">Notes</span>
+                </div>
+              </div>
+              <div class="panel">
+                <h3>Core idea</h3>
+                <ul>
+                  <li><strong>Raw Markdown</strong>: what you type.</li>
+                  <li><strong>Rendered Markdown</strong>: what the tool displays.</li>
+                  <li><strong>Main benefit</strong>: readable before and after rendering.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="slide">
+          <div>
+            <span class="eyebrow">Slide 2 · Why It Exists</span>
+            <h2>Simple writing without heavy formatting tools</h2>
+            <div class="grid-3">
+              <div class="stat-card teal">
+                <strong>Fast</strong>
+                <p>Plain-text editing is quick and works well in code editors and terminals.</p>
+              </div>
+              <div class="stat-card blue">
+                <strong>Portable</strong>
+                <p>Markdown moves across platforms, websites, static sites, and note tools.</p>
+              </div>
+              <div class="stat-card rust">
+                <strong>Versionable</strong>
+                <p>Because it is plain text, Git diffs and reviews stay clean and understandable.</p>
+              </div>
+            </div>
+            <div class="footer-bar">
+              <span>Markdown is markup, not a programming language.</span>
+              <span>Write text first, structure second.</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="slide">
+          <div>
+            <span class="eyebrow">Slide 3 · Essential Syntax</span>
+            <h2>Learn these patterns first</h2>
+            <div class="grid-2">
+              <div class="panel">
+                <h3>Most useful elements</h3>
+                <ul>
+                  <li><code>#</code> headings</li>
+                  <li><code>-</code> and <code>1.</code> lists</li>
+                  <li><code>[text](url)</code> links</li>
+                  <li><code>![alt](img.png)</code> images</li>
+                  <li><code>`inline code`</code> and fenced code blocks</li>
+                  <li><code>&gt;</code> blockquotes</li>
+                </ul>
+              </div>
+              <div>
+                <pre># Title
+
+## Section
+
+- bullet
+1. numbered
+
+[Link](https://example.com)
+![Alt text](image.png)
+
+`inline code`
+
+```js
+console.log("Hello");
+```
+
+> quote</pre>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="slide">
+          <div>
+            <span class="eyebrow">Slide 4 · Mental Model</span>
+            <h2>How Markdown becomes something visible</h2>
+            <div class="flow">
+              <div class="step teal">
+                <strong>1. Write</strong>
+                <p>Create plain text with lightweight syntax such as headings, lists, and code fences.</p>
+              </div>
+              <div class="step blue">
+                <strong>2. Parse</strong>
+                <p>A Markdown parser reads structure, blank lines, indentation, and special symbols.</p>
+              </div>
+              <div class="step gold">
+                <strong>3. Render</strong>
+                <p>The result usually becomes HTML, then a browser or app displays the final layout.</p>
+              </div>
+            </div>
+            <div class="grid-2">
+              <div class="panel">
+                <h3>What matters</h3>
+                <ul>
+                  <li>blank lines often separate blocks</li>
+                  <li>indentation matters in nested lists and code</li>
+                  <li>closing code fences matters</li>
+                </ul>
+              </div>
+              <div class="panel">
+                <h3>Compatibility rule</h3>
+                <ul>
+                  <li>basic syntax is portable</li>
+                  <li>advanced features depend on Markdown flavor</li>
+                  <li>GitHub Flavored Markdown adds tables and task lists</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="slide">
+          <div>
+            <span class="eyebrow">Slide 5 · Best Practices</span>
+            <h2>Write Markdown that stays clear and portable</h2>
+            <div class="grid-2">
+              <div class="panel">
+                <h3>Good habits</h3>
+                <ul>
+                  <li>use one top-level title</li>
+                  <li>keep heading levels in order</li>
+                  <li>label fenced code blocks with a language</li>
+                  <li>write descriptive link text</li>
+                  <li>add alt text to images</li>
+                </ul>
+              </div>
+              <div class="panel">
+                <h3>Common mistakes</h3>
+                <ul>
+                  <li>forgetting blank lines between sections</li>
+                  <li>breaking list indentation</li>
+                  <li>mixing tabs and spaces</li>
+                  <li>forgetting to close triple backticks</li>
+                  <li>assuming every platform supports the same extensions</li>
+                </ul>
+              </div>
+            </div>
+            <pre>| Syntax | Meaning |
+| --- | --- |
+| # | heading |
+| - | list item |
+| `code` | inline code |
+
+- [x] done
+- [ ] not done</pre>
+          </div>
+        </section>
+
+        <section class="slide">
+          <div>
+            <span class="eyebrow">Slide 6 · Practical Use</span>
+            <h2>Where Markdown fits best</h2>
+            <div class="grid-2">
+              <div class="panel">
+                <h3>Great use cases</h3>
+                <ul>
+                  <li>README files and documentation</li>
+                  <li>technical notes and class notes</li>
+                  <li>issue templates and task lists</li>
+                  <li>knowledge bases and blog drafts</li>
+                  <li>slide-content pipelines</li>
+                </ul>
+              </div>
+              <div class="panel">
+                <h3>Less ideal when you need</h3>
+                <ul>
+                  <li>pixel-perfect visual layout</li>
+                  <li>advanced typography control</li>
+                  <li>complex page composition</li>
+                  <li>spreadsheet-style editing</li>
+                </ul>
+              </div>
+            </div>
+            <p class="lede">
+              Learn headings, paragraphs, lists, links, and code blocks first. Once those are automatic,
+              most Markdown writing becomes straightforward.
+            </p>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <script>
+      const slides = Array.from(document.querySelectorAll(".slide"));
+      let index = 0;
+
+      function render(nextIndex) {
+        index = (nextIndex + slides.length) % slides.length;
+        slides.forEach((slide, current) => {
+          slide.classList.toggle("active", current === index);
+        });
+        document.getElementById("counter").textContent = `${index + 1} / ${slides.length}`;
+      }
+
+      function nextSlide() {
+        render(index + 1);
+      }
+
+      function previousSlide() {
+        render(index - 1);
+      }
+
+      document.getElementById("nextBtnHeader").addEventListener("click", nextSlide);
+      document.getElementById("prevBtnHeader").addEventListener("click", previousSlide);
+
+      window.addEventListener("keydown", (event) => {
+        if (event.key === "ArrowRight" || event.key === " " || event.key === "PageDown") {
+          event.preventDefault();
+          nextSlide();
+        }
+
+        if (event.key === "ArrowLeft" || event.key === "PageUp") {
+          event.preventDefault();
+          previousSlide();
+        }
+      });
+    </script>
+  </body>
+</html>
